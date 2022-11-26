@@ -40,10 +40,10 @@ public class StudentsEntity {
     private String graduationTopic;
 
     @Column(name = "internship_id")
-    private Boolean internshipId;
+    private Long internshipId;
 
     @Column(name = "graduation_id")
-    private String graduationId;
+    private Long graduationId;
 
     @Column(name = "status")
     private StatusEnum status;

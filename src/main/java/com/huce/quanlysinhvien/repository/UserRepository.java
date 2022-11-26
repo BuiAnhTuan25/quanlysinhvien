@@ -2,6 +2,8 @@ package com.huce.quanlysinhvien.repository;
 
 import com.huce.quanlysinhvien.constains.StatusEnum;
 import com.huce.quanlysinhvien.model.entity.UsersEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +16,9 @@ public interface UserRepository extends JpaRepository<UsersEntity, Long> {
     Optional<UsersEntity> findByIdAndStatus(@Param("id") Long id, @Param("status") StatusEnum status);
 
     Optional<UsersEntity> findByUsername(@Param("username") String username);
+
+    @Query("select u from UsersEntity u where u.status = 1")
+    Page<UsersEntity> getAll(Pageable pageable);
 
     @Query("SELECT u FROM UsersEntity u WHERE u.username = :username")
     UsersEntity getUserByUsername(@Param("username") String username);

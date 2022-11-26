@@ -22,6 +22,14 @@ public class UserController {
         return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
     }
 
+    @GetMapping("")
+    public ResponseEntity<?> getAll(
+            @RequestParam("page") int page,
+            @RequestParam("page-size") int pageSize
+    ) {
+        return new ResponseEntity<>(userService.getAll(page, pageSize), HttpStatus.OK);
+    }
+
     @PostMapping("")
     public ResponseEntity<?> createUser(
             @RequestBody UsersDto user

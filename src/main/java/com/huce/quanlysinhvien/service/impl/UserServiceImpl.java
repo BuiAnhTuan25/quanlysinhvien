@@ -5,12 +5,16 @@ import com.huce.quanlysinhvien.model.dto.UpdatePasswordDto;
 import com.huce.quanlysinhvien.model.dto.UsersDto;
 import com.huce.quanlysinhvien.model.entity.UsersEntity;
 import com.huce.quanlysinhvien.model.response.Data;
+import com.huce.quanlysinhvien.model.response.ListData;
+import com.huce.quanlysinhvien.model.response.Pagination;
 import com.huce.quanlysinhvien.model.response.Response;
 import com.huce.quanlysinhvien.repository.UserRepository;
 import com.huce.quanlysinhvien.security.CustomUserDetails;
 import com.huce.quanlysinhvien.service.UserService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,6 +38,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Optional<UsersEntity> user = userRepository.findByIdAndStatus(id, StatusEnum.ACTIVE);
 
         return user.map(data -> response.responseData("Get user successfully", mapper.map(data, UsersDto.class))).orElseGet(() -> response.responseError("Entity not found"));
+    }
+
+    @Override
+    public ListData getAll(int page, int pageSize) {
+        Page<UsersEntity> users = userRepository.getAll(PageRequest.of(page, pageSize));
+
+        return response.responseListData(users.getContent(), new Pagination(users.getNumber(), users.getSize(), users.getTotalPages(),
+                (int) users.getTotalElements()));
     }
 
     @Override

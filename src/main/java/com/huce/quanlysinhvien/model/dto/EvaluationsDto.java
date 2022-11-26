@@ -15,6 +15,8 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 public class EvaluationsDto {
+    private Long id;
+
     @NotBlank
     private String topic;
 

@@ -13,6 +13,8 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 public class StudentsDto {
+    private Long id;
+
     @NotBlank
     private String name;
 
@@ -32,10 +34,10 @@ public class StudentsDto {
     private String graduationTopic;
 
     @NotBlank
-    private Boolean internshipId;
+    private Long internshipId;
 
     @NotBlank
-    private String graduationId;
+    private Long graduationId;
 
     @NotBlank
     private StatusEnum status;
