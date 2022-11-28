@@ -57,7 +57,7 @@ public class StudentsEntity {
         this.graduationTopic = student.getGraduationTopic();
         this.graduationId = student.getGraduationId();
         this.internshipId = student.getInternshipId();
-        this.status = student.getStatus();
+        this.status = StatusEnum.ACTIVE;
     }
 
     public StudentsEntity mapper(StudentsDto student) {

@@ -16,6 +16,24 @@ public class StudentController {
 
     private final StudentService studentService;
 
+    @GetMapping("/internship/{id}")
+    public ResponseEntity<?> getByInternshipId(
+            @PathVariable Long id,
+            @RequestParam("page") int page,
+            @RequestParam("page-size") int pageSize
+    ) {
+        return new ResponseEntity<>(studentService.getListStudentByInternshipId(id, page, pageSize), HttpStatus.OK);
+    }
+
+    @GetMapping("/graduation/{id}")
+    public ResponseEntity<?> getByGraduationId(
+            @PathVariable Long id,
+            @RequestParam("page") int page,
+            @RequestParam("page-size") int pageSize
+    ) {
+        return new ResponseEntity<>(studentService.getListStudentByGraduationId(id, page, pageSize), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getStudent(
             @PathVariable Long id

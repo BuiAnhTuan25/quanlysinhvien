@@ -25,5 +25,6 @@ public class SemestersDto {
     @NotBlank
     private TypeEnum type;
 
+    @NotBlank
     private SemesterEnum status;
 }

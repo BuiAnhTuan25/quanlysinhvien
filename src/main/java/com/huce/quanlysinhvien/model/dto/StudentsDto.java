@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 
 @AllArgsConstructor
@@ -24,21 +25,13 @@ public class StudentsDto {
     @NotBlank
     private String className;
 
-    @NotBlank
     private Long teacherId;
 
-    @NotBlank
     private String internshipPlace;
 
-    @NotBlank
     private String graduationTopic;
 
-    @NotBlank
     private Long internshipId;
 
-    @NotBlank
     private Long graduationId;
-
-    @NotBlank
-    private StatusEnum status;
 }
