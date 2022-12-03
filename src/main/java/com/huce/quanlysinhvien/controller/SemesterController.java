@@ -4,6 +4,8 @@ import com.huce.quanlysinhvien.constains.SemesterEnum;
 import com.huce.quanlysinhvien.constains.StatusEnum;
 import com.huce.quanlysinhvien.constains.TypeEnum;
 import com.huce.quanlysinhvien.model.dto.SemestersDto;
+import com.huce.quanlysinhvien.model.request.SemesterSearchRequest;
+import com.huce.quanlysinhvien.model.request.StudentSearchRequest;
 import com.huce.quanlysinhvien.service.SemesterService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,19 @@ public class SemesterController {
             @PathVariable Long id
     ) {
         return new ResponseEntity<>(semesterService.getById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> search(
+            @RequestParam(value = "year", required = false) String year,
+            @RequestParam(value = "semester", required = false) String semester,
+            @RequestParam(value = "type", required = false) TypeEnum type,
+            @RequestParam(value = "status", required = false) SemesterEnum status,
+            @RequestParam(value = "sort-by", required = false) String sortBy,
+            @RequestParam("page") int page,
+            @RequestParam("page-size") int pageSize
+    ) {
+        return new ResponseEntity<>(semesterService.search(new SemesterSearchRequest(year, semester, status, type, sortBy), page, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("")

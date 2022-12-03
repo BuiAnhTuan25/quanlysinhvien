@@ -3,12 +3,17 @@ package com.huce.quanlysinhvien.service.impl;
 import com.huce.quanlysinhvien.constains.SemesterEnum;
 import com.huce.quanlysinhvien.constains.TypeEnum;
 import com.huce.quanlysinhvien.model.dto.SemestersDto;
+import com.huce.quanlysinhvien.model.dto.StudentsDto;
 import com.huce.quanlysinhvien.model.entity.SemestersEntity;
+import com.huce.quanlysinhvien.model.entity.StudentsEntity;
+import com.huce.quanlysinhvien.model.request.SemesterSearchRequest;
+import com.huce.quanlysinhvien.model.request.StudentSearchRequest;
 import com.huce.quanlysinhvien.model.response.Data;
 import com.huce.quanlysinhvien.model.response.ListData;
 import com.huce.quanlysinhvien.model.response.Pagination;
 import com.huce.quanlysinhvien.model.response.Response;
 import com.huce.quanlysinhvien.repository.SemesterRepository;
+import com.huce.quanlysinhvien.repository.custom.SemesterRepositoryCustom;
 import com.huce.quanlysinhvien.service.SemesterService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -28,12 +33,22 @@ public class SemesterServiceImpl implements SemesterService {
     private final SemesterRepository semesterRepository;
     private final ModelMapper mapper;
     private final Response response;
+    private final SemesterRepositoryCustom semesterRepositoryCustom;
 
     @Override
     public Data getById(Long id){
         Optional<SemestersEntity> semester = semesterRepository.findById(id);
 
         return semester.map(data -> response.responseData("Get semester successfully", mapper.map(data, SemestersDto.class))).orElseGet(() -> response.responseError("Entity not found"));
+    }
+
+    @Override
+    public ListData search(SemesterSearchRequest request, int page, int pageSize) {
+        List<SemestersEntity> semesters = semesterRepositoryCustom.search(request, page, pageSize);
+        List<SemestersDto> semestersDto = semesters.stream().map(p -> this.mapper.map(p, SemestersDto.class)).collect(Collectors.toList());
+        int total = semesterRepositoryCustom.count(request).intValue();
+        int totalPage = total % pageSize == 0 ? total / pageSize : total / pageSize + 1;
+        return new ListData(true, "Search semester successfully",200, semestersDto, new Pagination(page, pageSize, totalPage, total));
     }
 
     @Override

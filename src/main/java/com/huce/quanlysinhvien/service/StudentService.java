@@ -1,11 +1,13 @@
 package com.huce.quanlysinhvien.service;
 
 import com.huce.quanlysinhvien.model.dto.StudentsDto;
+import com.huce.quanlysinhvien.model.request.StudentSearchRequest;
 import com.huce.quanlysinhvien.model.response.Data;
 import com.huce.quanlysinhvien.model.response.ListData;
 
 public interface StudentService {
     Data getById(Long id);
+    ListData search(StudentSearchRequest request, int page, int pageSize);
 
     ListData getListStudentByInternshipId(Long internshipId, int page, int pageSize);
 
