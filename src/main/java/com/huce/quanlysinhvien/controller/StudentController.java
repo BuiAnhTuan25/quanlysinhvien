@@ -1,5 +1,6 @@
 package com.huce.quanlysinhvien.controller;
 
+import com.huce.quanlysinhvien.constains.TypeEnum;
 import com.huce.quanlysinhvien.model.dto.StudentsDto;
 import com.huce.quanlysinhvien.model.request.StudentSearchRequest;
 import com.huce.quanlysinhvien.service.StudentService;
@@ -33,6 +34,15 @@ public class StudentController {
             @RequestParam("page-size") int pageSize
     ) {
         return new ResponseEntity<>(studentService.getListStudentByGraduationId(id, page, pageSize), HttpStatus.OK);
+    }
+
+    @GetMapping("/add-semester")
+    public ResponseEntity<?> getBySemesterNull(
+            @RequestParam("type") TypeEnum type,
+            @RequestParam("page") int page,
+            @RequestParam("page-size") int pageSize
+    ) {
+        return new ResponseEntity<>(studentService.searchSemesterNull(type, page, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
