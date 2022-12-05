@@ -45,6 +45,7 @@ public class SemestersEntity {
         this.semester = semester.getSemester();
         this.year = semester.getYear();
         this.type = semester.getType();
+        this.status = semester.getStatus();
 
         return this;
     }
