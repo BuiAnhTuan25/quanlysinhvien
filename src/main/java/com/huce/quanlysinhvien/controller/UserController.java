@@ -1,6 +1,8 @@
 package com.huce.quanlysinhvien.controller;
 
+import com.huce.quanlysinhvien.constains.RoleEnum;
 import com.huce.quanlysinhvien.model.dto.UsersDto;
+import com.huce.quanlysinhvien.model.request.UserSearchRequest;
 import com.huce.quanlysinhvien.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,18 @@ public class UserController {
             @PathVariable Long id
     ) {
         return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> search(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "username", required = false) String username,
+            @RequestParam(value = "role", required = false) RoleEnum role,
+            @RequestParam(value = "sort-by", required = false) String sortBy,
+            @RequestParam("page") int page,
+            @RequestParam("page-size") int pageSize
+    ) {
+        return new ResponseEntity<>(userService.search(new UserSearchRequest(name, username, role, sortBy), page, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("")

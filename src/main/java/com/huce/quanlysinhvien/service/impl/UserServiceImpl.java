@@ -4,11 +4,13 @@ import com.huce.quanlysinhvien.constains.StatusEnum;
 import com.huce.quanlysinhvien.model.dto.UpdatePasswordDto;
 import com.huce.quanlysinhvien.model.dto.UsersDto;
 import com.huce.quanlysinhvien.model.entity.UsersEntity;
+import com.huce.quanlysinhvien.model.request.UserSearchRequest;
 import com.huce.quanlysinhvien.model.response.Data;
 import com.huce.quanlysinhvien.model.response.ListData;
 import com.huce.quanlysinhvien.model.response.Pagination;
 import com.huce.quanlysinhvien.model.response.Response;
 import com.huce.quanlysinhvien.repository.UserRepository;
+import com.huce.quanlysinhvien.repository.custom.UserRepositoryCustom;
 import com.huce.quanlysinhvien.security.CustomUserDetails;
 import com.huce.quanlysinhvien.service.UserService;
 import lombok.AllArgsConstructor;
@@ -22,13 +24,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 @Transactional(rollbackOn = Exception.class)
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
+    private final UserRepositoryCustom userRepositoryCustom;
     private final ModelMapper mapper;
     private final Response response;
     private final PasswordEncoder passwordEncoder;
@@ -38,6 +43,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Optional<UsersEntity> user = userRepository.findByIdAndStatus(id, StatusEnum.ACTIVE);
 
         return user.map(data -> response.responseData("Get user successfully", mapper.map(data, UsersDto.class))).orElseGet(() -> response.responseError("Entity not found"));
+    }
+
+    @Override
+    public ListData search(UserSearchRequest request, int page, int pageSize) {
+        List<UsersEntity> users = userRepositoryCustom.search(request, page, pageSize);
+        List<UsersDto> usersDto = users.stream().map(p -> this.mapper.map(p, UsersDto.class)).collect(Collectors.toList());
+        int total = userRepositoryCustom.count(request).intValue();
+        int totalPage = total % pageSize == 0 ? total / pageSize : total / pageSize + 1;
+        return new ListData(true, "Search user successfully",200, usersDto, new Pagination(page, pageSize, totalPage, total));
     }
 
     @Override
