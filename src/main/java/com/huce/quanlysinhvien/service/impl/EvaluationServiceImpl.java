@@ -34,6 +34,12 @@ public class EvaluationServiceImpl implements EvaluationService {
 
         return evaluation.map(data -> response.responseData("Get evaluation successfully", mapper.map(data, EvaluationsDto.class))).orElseGet(() -> response.responseError("Entity not found"));
     }
+    @Override
+    public Data getByStudentId(Long id, TypeEnum type){
+        Optional<EvaluationsEntity> evaluation = evaluationRepository.findByStudentIdAndType(id, type);
+
+        return evaluation.map(data -> response.responseData("Get evaluation successfully", mapper.map(data, EvaluationsDto.class))).orElseGet(() -> response.responseError("Entity not found"));
+    }
 
     @Override
     public ListData getAll(int page, int pageSize){

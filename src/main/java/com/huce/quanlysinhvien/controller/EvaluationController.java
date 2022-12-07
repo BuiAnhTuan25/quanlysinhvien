@@ -23,6 +23,14 @@ public class EvaluationController {
         return new ResponseEntity<>(evaluationService.getById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/student/{id}")
+    public ResponseEntity<?> getEvaluationByStudentId(
+            @PathVariable Long id,
+            @RequestParam(value = "type") TypeEnum type
+    ) {
+        return new ResponseEntity<>(evaluationService.getByStudentId(id, type), HttpStatus.OK);
+    }
+
     @GetMapping("/type")
     public ResponseEntity<?> getByType(
             @RequestParam("type") TypeEnum type,

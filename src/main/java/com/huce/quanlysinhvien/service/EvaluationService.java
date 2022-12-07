@@ -7,6 +7,7 @@ import com.huce.quanlysinhvien.model.response.ListData;
 
 public interface EvaluationService {
     Data getById(Long id);
+    Data getByStudentId(Long id, TypeEnum type);
     ListData getAll(int page, int pageSize);
     ListData getByType(TypeEnum type, int page, int pageSize);
     Data createEvaluation(EvaluationsDto evaluation);
