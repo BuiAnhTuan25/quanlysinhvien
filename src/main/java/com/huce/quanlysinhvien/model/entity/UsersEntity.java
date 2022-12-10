@@ -42,7 +42,7 @@ public class UsersEntity {
         this.password = user.getPassword();
         this.name = user.getName();
         this.role = user.getRole();
-        this.status = user.getStatus();
+        this.status = StatusEnum.ACTIVE;
     }
 
     public UsersEntity mapper(UsersDto user) {

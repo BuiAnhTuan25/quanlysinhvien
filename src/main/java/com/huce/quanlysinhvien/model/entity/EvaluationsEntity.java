@@ -49,6 +49,7 @@ public class EvaluationsEntity {
         this.note = evaluation.getNote();
         this.studentId = evaluation.getStudentId();
         this.type = evaluation.getType();
+        this.status = StatusEnum.ACTIVE;
     }
 
     public EvaluationsEntity mapper(EvaluationsDto evaluation) {
