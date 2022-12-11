@@ -30,11 +30,11 @@ public interface StudentRepository extends JpaRepository<StudentsEntity, Long> {
 
     @Query("select new com.huce.quanlysinhvien.model.dto.StudentsDto(s.id,s.name,s.studentCode,s.className,s.teacherId,s.internshipPlace,s.graduationTopic,s.internshipId,s.graduationId,e.mark) " +
             " from StudentsEntity s join EvaluationsEntity e on s.id = e.studentId " +
-            " where s.graduationId = :graduationId and e.status = 1")
+            " where s.graduationId = :graduationId and e.type = 1")
     Page<StudentsDto> statisticGraduation(@Param("graduationId") Long graduationId, Pageable pageable);
 
     @Query("select new com.huce.quanlysinhvien.model.dto.StudentsDto(s.id,s.name,s.studentCode,s.className,s.teacherId,s.internshipPlace,s.graduationTopic,s.internshipId,s.graduationId,e.mark) " +
             " from StudentsEntity s join EvaluationsEntity e on s.id = e.studentId " +
-            " where s.internshipId = :internshipId and e.status = 0")
+            " where s.internshipId = :internshipId and e.type = 0")
     Page<StudentsDto> statisticInternship(@Param("internshipId") Long internshipId, Pageable pageable);
 }
