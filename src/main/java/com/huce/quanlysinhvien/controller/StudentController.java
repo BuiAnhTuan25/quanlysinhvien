@@ -36,6 +36,24 @@ public class StudentController {
         return new ResponseEntity<>(studentService.getListStudentByGraduationId(id, page, pageSize), HttpStatus.OK);
     }
 
+    @GetMapping("/statistic-internship/{id}")
+    public ResponseEntity<?> statisticInternship(
+            @PathVariable Long id,
+            @RequestParam("page") int page,
+            @RequestParam("page-size") int pageSize
+    ) {
+        return new ResponseEntity<>(studentService.statisticInternship(id, page, pageSize), HttpStatus.OK);
+    }
+
+    @GetMapping("/statistic-graduation/{id}")
+    public ResponseEntity<?> statisticGraduation(
+            @PathVariable Long id,
+            @RequestParam("page") int page,
+            @RequestParam("page-size") int pageSize
+    ) {
+        return new ResponseEntity<>(studentService.statisticGraduation(id, page, pageSize), HttpStatus.OK);
+    }
+
     @GetMapping("/add-semester")
     public ResponseEntity<?> getBySemesterNull(
             @RequestParam("type") TypeEnum type,

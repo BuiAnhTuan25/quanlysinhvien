@@ -14,6 +14,10 @@ public interface StudentService {
 
     ListData getListStudentByGraduationId(Long graduationId, int page, int pageSize);
 
+    ListData statisticGraduation(Long graduationId, int page, int pageSize);
+
+    ListData statisticInternship(Long internshipId, int page, int pageSize);
+
     Data createStudent(StudentsDto user);
 
     Data updateStudent(StudentsDto user, Long id);

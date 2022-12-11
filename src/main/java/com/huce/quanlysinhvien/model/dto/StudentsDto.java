@@ -1,12 +1,10 @@
 package com.huce.quanlysinhvien.model.dto;
 
-import com.huce.quanlysinhvien.constains.StatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 
 @AllArgsConstructor
@@ -34,4 +32,6 @@ public class StudentsDto {
     private Long internshipId;
 
     private Long graduationId;
+
+    private String mark;
 }

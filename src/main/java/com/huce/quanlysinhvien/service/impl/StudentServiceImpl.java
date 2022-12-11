@@ -86,6 +86,22 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public ListData statisticInternship(Long internshipId, int page, int pageSize) {
+        Page<StudentsDto> students = studentRepository.statisticInternship(internshipId, PageRequest.of(page, pageSize));
+
+        return response.responseListData(students.getContent(), new Pagination(students.getNumber(), students.getSize(), students.getTotalPages(),
+                (int) students.getTotalElements()));
+    }
+
+    @Override
+    public ListData statisticGraduation(Long graduationId, int page, int pageSize) {
+        Page<StudentsDto> students = studentRepository.statisticGraduation(graduationId, PageRequest.of(page, pageSize));
+
+        return response.responseListData(students.getContent(), new Pagination(students.getNumber(), students.getSize(), students.getTotalPages(),
+                (int) students.getTotalElements()));
+    }
+
+    @Override
     public Data createStudent(StudentsDto studentsDto) {
         Optional<StudentsEntity> student = studentRepository.findByStudentCode(studentsDto.getStudentCode());
 
