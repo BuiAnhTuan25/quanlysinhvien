@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -37,4 +38,7 @@ public interface StudentRepository extends JpaRepository<StudentsEntity, Long> {
             " from StudentsEntity s join EvaluationsEntity e on s.id = e.studentId " +
             " where s.internshipId = :internshipId and e.type = 0")
     Page<StudentsDto> statisticInternship(@Param("internshipId") Long internshipId, Pageable pageable);
+
+    @Query("select s from StudentsEntity s where s.studentCode in :codes")
+    List<StudentsEntity> findByCodes(@Param("codes") List<String> codes);
 }

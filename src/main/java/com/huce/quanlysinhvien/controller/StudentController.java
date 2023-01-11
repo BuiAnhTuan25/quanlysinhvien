@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.MessagingException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin
 @RestController
 @AllArgsConstructor
@@ -91,6 +93,13 @@ public class StudentController {
         return new ResponseEntity<>(studentService.createStudent(student), HttpStatus.CREATED);
     }
 
+    @PostMapping("/list")
+    public ResponseEntity<?> createListStudent(
+            @RequestBody List<StudentsDto> students
+    ) throws MessagingException {
+        return new ResponseEntity<>(studentService.createListStudent(students), HttpStatus.CREATED);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateStudent(
             @RequestBody StudentsDto student,
@@ -104,5 +113,10 @@ public class StudentController {
             @PathVariable Long id
     ) {
         return new ResponseEntity<>(studentService.deleteStudent(id), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/all")
+    public ResponseEntity<?> deleteAll() {
+        return new ResponseEntity<>(studentService.deleteAll(), HttpStatus.OK);
     }
 }

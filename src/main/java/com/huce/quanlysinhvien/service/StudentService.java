@@ -6,6 +6,8 @@ import com.huce.quanlysinhvien.model.request.StudentSearchRequest;
 import com.huce.quanlysinhvien.model.response.Data;
 import com.huce.quanlysinhvien.model.response.ListData;
 
+import java.util.List;
+
 public interface StudentService {
     Data getById(Long id);
     ListData search(StudentSearchRequest request, int page, int pageSize);
@@ -20,7 +22,11 @@ public interface StudentService {
 
     Data createStudent(StudentsDto user);
 
+    Data createListStudent(List<StudentsDto> students);
+
     Data updateStudent(StudentsDto user, Long id);
 
     Data deleteStudent(Long id);
+
+    Data deleteAll();
 }

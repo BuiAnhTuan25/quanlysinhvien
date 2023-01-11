@@ -18,9 +18,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -48,13 +50,13 @@ public class StudentServiceImpl implements StudentService {
         List<StudentsDto> studentsDto = students.stream().map(p -> this.mapper.map(p, StudentsDto.class)).collect(Collectors.toList());
         int total = studentRepositoryCustom.count(request).intValue();
         int totalPage = total % pageSize == 0 ? total / pageSize : total / pageSize + 1;
-        return new ListData(true, "Search student successfully",200, studentsDto, new Pagination(page, pageSize, totalPage, total));
+        return new ListData(true, "Search student successfully", 200, studentsDto, new Pagination(page, pageSize, totalPage, total));
     }
 
     @Override
     public ListData searchSemesterNull(TypeEnum type, int page, int pageSize) {
         Page<StudentsEntity> students;
-        if(Objects.equals(type, TypeEnum.INTERNSHIP)) {
+        if (Objects.equals(type, TypeEnum.INTERNSHIP)) {
             students = this.studentRepository.searchInternshipNull(PageRequest.of(page, pageSize));
         } else {
             students = this.studentRepository.searchGraduationNull(PageRequest.of(page, pageSize));
@@ -102,6 +104,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional
     public Data createStudent(StudentsDto studentsDto) {
         Optional<StudentsEntity> student = studentRepository.findByStudentCode(studentsDto.getStudentCode());
 
@@ -114,6 +117,25 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional
+    public Data createListStudent(List<StudentsDto> students) {
+        List<String> codes = students.stream().map(StudentsDto::getStudentCode).collect(Collectors.toList());
+        List<StudentsEntity> studentsExist = studentRepository.findByCodes(codes);
+
+        if (!CollectionUtils.isEmpty(studentsExist)) {
+            return response.responseError("Student code does not exist");
+        }
+        List<StudentsEntity> studentsEntities = new ArrayList<>();
+        students.forEach(s -> {
+            studentsEntities.add(new StudentsEntity(s));
+        });
+        List<StudentsDto> studentsDtos = this.studentRepository.saveAll(studentsEntities).stream().map(s -> this.mapper.map(s, StudentsDto.class)).collect(Collectors.toList());
+
+        return response.responseData("Create successfully", studentsDtos);
+    }
+
+    @Override
+    @Transactional
     public Data updateStudent(StudentsDto studentsDto, Long id) {
         Optional<StudentsEntity> student = studentRepository.findById(id);
         if (student.isEmpty()) {
@@ -126,6 +148,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional
     public Data deleteStudent(Long id) {
         Optional<StudentsEntity> student = studentRepository.findById(id);
         if (student.isEmpty()) {
@@ -134,5 +157,15 @@ public class StudentServiceImpl implements StudentService {
         student.get().delete();
 
         return response.responseData("Delete successfully", mapper.map(studentRepository.save(student.get()), StudentsDto.class));
+    }
+
+    @Override
+    @Transactional
+    public Data deleteAll() {
+        List<StudentsEntity> students = this.studentRepository.findAll();
+        students.forEach(StudentsEntity::delete);
+        this.studentRepository.saveAll(students);
+
+        return response.responseData("Delete successfully", null);
     }
 }
